@@ -1,17 +1,15 @@
 from imutils import paths
-import pandas as pd
 import os
 import csv
 
-# MAIN_FOLDER = "G:\datasets\Alice\Data\Chinese\cropped_faces"
-MAIN_FOLDER = "G:\datasets\Alice\Data\African\cropped_faces"
-ETHNICITY = "AFRICAN"
+MAIN_FOLDER = "G:\datasets\Alice\Data\Chinese\cropped_faces"
+# MAIN_FOLDER = "G:\datasets\Alice\Data\African\cropped_faces"
+ETHNICITY = "CHINESE"
 OUTPUT_FOLDER = "data"
 
 folders = os.listdir(MAIN_FOLDER)
 labels_num = [0, 1, 2, 3]
 labels_str = ["angry", "happy", "neutral", "sad"]
-
 csv_data = []
 
 """
@@ -50,6 +48,6 @@ for f in folders:
             name = dd[len(dd) - 1]
             csv_data.append([name, 3, labels_str[3], ETHNICITY])
 
-with open(OUTPUT_FOLDER+"/all_data_african.csv", "w") as f:
+with open(OUTPUT_FOLDER + "/all_data_chinese.csv", "w", newline='') as f:
     writer = csv.writer(f)
     writer.writerows(csv_data)

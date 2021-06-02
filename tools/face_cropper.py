@@ -5,7 +5,6 @@ from imutils import paths
 
 INPUT_FOLDER = "G:\datasets\Alice\Data\Chinese\original/sad"
 OUTPUT_FOLDER = "G:\datasets\Alice\Data\Chinese\cropped_faces/sad_cropped_faces"
-LABEL = 0
 
 # Read all image files
 files = list(paths.list_images(INPUT_FOLDER))
