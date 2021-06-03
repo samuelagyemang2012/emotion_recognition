@@ -3,8 +3,11 @@ import numpy as np
 import face_recognition
 from imutils import paths
 
-INPUT_FOLDER = "G:\datasets\Alice\Data\Chinese\original/sad"
-OUTPUT_FOLDER = "G:\datasets\Alice\Data\Chinese\cropped_faces/sad_cropped_faces"
+# INPUT_FOLDER = "G:\datasets\Alice\Data\Chinese\original/sad"
+# OUTPUT_FOLDER = "G:\datasets\Alice\Data\Chinese\cropped_faces/sad_cropped_faces"
+
+INPUT_FOLDER = "C:/Users/Administrator/Documents/WeChat Files/wxid_avb9aus2fd1622/FileStorage/File/2021-06/africans/africans"
+OUTPUT_FOLDER = "test"
 
 # Read all image files
 files = list(paths.list_images(INPUT_FOLDER))
