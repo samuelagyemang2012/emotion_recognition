@@ -1,8 +1,7 @@
 import numpy as np
 from statistics import mean
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, classification_report, precision_score, recall_score, \
-    accuracy_score
+from sklearn.metrics import confusion_matrix, classification_report, precision_score, recall_score, f1_score
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
@@ -18,15 +17,12 @@ def show_classification_report(y_test, preds, names):
 
 def get_metrics(acc, y_test, preds):
     data = "Accuracy: " + str(acc[1]) + "\n"
-    tn, fp, fn, tp = confusion_matrix(y_test.argmax(axis=1), preds).ravel()
-    data += 'False positive rate: ' + str(fp / (fp + tn)) + "\n"
-    data += 'False negative rate: ' + str(fn / (fn + tp)) + "\n"
-    recall = tp / (tp + fn)
+    recall = recall_score(y_test.argmax(axis=1), preds, average='micro')
     data += 'Recall: ' + str(recall) + "\n"
-    precision = tp / (tp + fp)
+    precision = precision_score(y_test.argmax(axis=1), preds, average='micro')
     data += 'Precision: ' + str(precision) + "\n"
-    f1_score = ((2 * precision * recall) / (precision + recall))
-    data += 'F1 score: ' + str(f1_score) + "\n"
+    f1 = f1_score(y_test.argmax(axis=1), preds, average='micro')
+    data += 'F1_score: ' + str(f1) + "\n"
     return data
 
 
@@ -53,8 +49,8 @@ def metrics_to_file(file_title, path, y_test, preds, names, acc):
 def acc_loss_graphs_to_file(model_name, history, legend, legend_loc, loss_path, acc_path):
     loss_title = model_name + " Loss Graph"
     acc_title = model_name + " Accuracy Graph"
-    train_acc = history.history['acc']
-    val_acc = history.history['val_acc']
+    train_acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
     train_loss = history.history['loss']
     val_loss = history.history['val_loss']
     draw_training_graphs(loss_title, train_loss, val_loss, "epochs", "loss", legend, legend_loc, loss_path)

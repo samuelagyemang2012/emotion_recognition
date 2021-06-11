@@ -1,0 +1,22 @@
+afr_emotion_model
+*Confusion Matrix*
+[[ 0 13  0  0]
+ [ 0 26  0  0]
+ [ 0 27  0  0]
+ [ 0  7  0  0]]
+*Classification Report*
+              precision    recall  f1-score   support
+
+       angry       0.00      0.00      0.00        13
+       happy       0.36      1.00      0.53        26
+     neutral       0.00      0.00      0.00        27
+         sad       0.00      0.00      0.00         7
+
+    accuracy                           0.36        73
+   macro avg       0.09      0.25      0.13        73
+weighted avg       0.13      0.36      0.19        73
+
+Accuracy: 0.3561643958091736
+Recall: 0.3561643835616438
+Precision: 0.3561643835616438
+F1_score: 0.35616438356164387

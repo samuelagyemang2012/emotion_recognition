@@ -6,21 +6,23 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.metrics import confusion_matrix, classification_report, f1_score, precision_score, recall_score, \
     accuracy_score
 from tensorflow.keras import regularizers
-# from keras.models import Model
+# from keras._models import Model
 
 from tensorflow.keras.applications import ResNet50, ResNet50V2
 
 
 # Resnet 50
-def resnet_50(input_shape):
-    base = ResNet50(weights='imagenet', include_top=False, input_shape=input_shape)
+def resnet_50(input_tensor, input_shape, weights):
+    base = ResNet50(weights=weights, input_tensor=input_tensor, include_top=False, input_shape=input_shape)
     base.trainable = False
     return base
 
 
 # Resnet 50 v2
-def resnet_50_v2(input_shape):
-    base = ResNet50V2(weights='imagenet', include_top=False, input_shape=input_shape)
+# input_tensor = Input(shape=(100, 100, 1))
+
+def resnet_50_v2(input_tensor, input_shape, weights):
+    base = ResNet50V2(weights=weights, input_tensor=input_tensor, include_top=False, input_shape=input_shape)
     base.trainable = False
     return base
 
