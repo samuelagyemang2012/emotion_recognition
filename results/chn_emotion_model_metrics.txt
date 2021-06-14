@@ -1,4 +1,4 @@
-afr_emotion_model
+chn_emotion_model
 *Classification Report*
               precision    recall  f1-score   support
 

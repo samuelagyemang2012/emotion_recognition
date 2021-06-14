@@ -1,13 +1,21 @@
 import numpy as np
-from statistics import mean
+import seaborn as sn
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report, precision_score, recall_score, f1_score
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 
-def show_confusion_matrix(y_test, preds):
-    res = confusion_matrix(y_test.argmax(axis=1), preds)
-    return "*Confusion Matrix*" + "\n" + np.array_str(res) + "\n"
+def plot_confusion_matrix(y_test, preds, labels, title, path):
+    cm = confusion_matrix(y_test.argmax(axis=1), preds)
+    df = pd.DataFrame(cm, index=labels, columns=labels)
+    plt.figure(figsize=(10, 7))
+    sn.heatmap(df, annot=True, cmap="Blues")
+    plt.title(title)
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.savefig(path)
+    plt.clf()
 
 
 def show_classification_report(y_test, preds, names):
@@ -26,22 +34,10 @@ def get_metrics(acc, y_test, preds):
     return data
 
 
-def get_fpr(y_test, preds):
-    tn, fp, fn, tp = confusion_matrix(y_test.argmax(axis=1), preds).ravel()
-    fpr = (fp / (fp + tn))
-    return fpr
-
-
-def get_fnr(y_test, preds):
-    tn, fp, fn, tp = confusion_matrix(y_test.argmax(axis=1), preds).ravel()
-    fnr = (fn / (fn + tp))
-    return fnr
-
-
-def metrics_to_file(file_title, path, y_test, preds, names, acc):
+def metrics_to_file(file_title, path, y_test, preds, labels, acc):
     data = file_title + "\n"
-    data += show_confusion_matrix(y_test, preds)
-    data += show_classification_report(y_test, preds, names)
+    # data += show_confusion_matrix(y_test, preds, labels)
+    data += show_classification_report(y_test, preds, labels)
     data += get_metrics(acc, y_test, preds)
     write_to_file(data, path)
 
@@ -68,10 +64,25 @@ def draw_training_graphs(title, train_hist, val_hist, x_label, y_label, legend, 
     plt.clf()
 
 
-def create_callbacks(best_model_path, monitor, mode, patience):
-    es = EarlyStopping(monitor=monitor, mode=mode, verbose=1, patience=patience)
-    mc = ModelCheckpoint(best_model_path, monitor=monitor, mode=mode, verbose=1, save_best_only=True)
-    callbacks = [es, mc]
+def create_callbacks(): #(best_model_path, monitor, mode, patience):
+    es = EarlyStopping(
+        monitor='val_accuracy',
+        min_delta=0.00005,
+        patience=11,
+        verbose=1,
+        restore_best_weights=True,
+    )
+
+    lr_scheduler = ReduceLROnPlateau(
+        monitor='val_accuracy',
+        factor=0.5,
+        patience=7,
+        min_lr=1e-7,
+        verbose=1,
+    )
+
+    # mc = ModelCheckpoint(best_model_path, monitor=monitor, mode=mode, verbose=1, save_best_only=True)
+    callbacks = [es, lr_scheduler]  # , mc]
     return callbacks
 
 
